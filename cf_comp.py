@@ -1,6 +1,7 @@
-# Module for vector-tensor computations for "killends_?r_27Nov_gen*.py"
-# For the conefield implementation of converse KAM. [27nov23]
-#
+"""
+ Module for vector-tensor computations for 'cKAM_CF_2r.py' and 'ke_branches2.py',
+ for the conefield implementation of Converse KAM (Martinez '25).
+"""
 
 import numpy as np
 
@@ -66,17 +67,6 @@ def cf_computation(r0, th0, ph0,DBf,DBb,e1,m1,n1,e2,m2,n2,R0,w1,w2):
     
     return sp,sm, mp, mm, sξf,sξb
 
-# # Slope plot points - (R,z) coords ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ 
-# def slope_points_Rz(delta,mm,mp,x1,x2,sg):
-#     dx  = delta / np.sqrt((1+mm**2))  # dx**2 + dy**2 = delta**2  #  dy = m dx
-#     dx2 = delta / np.sqrt((1+mp**2))
-# 
-#     p0= [x1,x2]
-#     p1= [x1 + dx    , x2 + mm*dx]
-#     p2= [x1 - sg*dx2, x2 - sg*mp*dx2]
-#     p3= [x1 - dx    , x2 - mm*dx]
-#     p4= [x1 + sg*dx2, x2 +sg* mp*dx2]
-#     return p1,p2,p3,p4
 
 
 # Slope computation
@@ -89,7 +79,7 @@ def slope(x,y):
 
 # Slope plot points - (R,z) coords ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ 
 def slope_points_Rz(delta,mm,mp,x1,x2,sg):
-    dx  = delta / np.sqrt((1+mm**2))  # dx**2 + dy**2 = delta**2  #  dy = m dx
+    dx  = delta / np.sqrt((1+mm**2))  #
     dx2 = delta / np.sqrt((1+mp**2))
 
     p0= [x1,x2]
@@ -103,8 +93,8 @@ def slope_points_Rz(delta,mm,mp,x1,x2,sg):
 def slope_points_tr(a,b,mm,mp,th,r,sg):
     mmc = r * (1 + mm * np.tan(th)) / (mm - np.tan(th))
     mpc = r * (1 + mp * np.tan(th)) / (mp - np.tan(th))
-    dth = a*b / np.sqrt((b**2 + a**2 * mmc**2))   # BLUE - Upper slope for th^+
-    dth2 = a*b / np.sqrt((b**2 + a**2 * mpc**2))  # BLACK - Upper slope for th^+
+    dth = a*b / np.sqrt((b**2 + a**2 * mmc**2))   
+    dth2 = a*b / np.sqrt((b**2 + a**2 * mpc**2))  
     
     p0= [th,r]
     p1= [th + dth    , r +     mmc*dth]
@@ -126,7 +116,6 @@ nI = Matrix([[-1, 0, 0],
 # Cartesian to toroidal coordinates (on a poloidal cross section)
 def  rf(x,y,z,RR0) : return np.sqrt((np.sqrt(x**2+y**2)-RR0)**2 + z**2)
 def  ψf(x,y,z,RR0) : return ((np.sqrt(x**2+y**2)-RR0)**2 + z**2)/2
-# def  ψf2(x,y,z,RR0) : return ((np.sqrt(x**2+y**2))**2 + z**2)/2
 def  ψf2(x,y,z,RR0) : return (x**2+y**2+ z**2)/2
 def thf(x,y,z,RR0) : return np.arctan2(z,np.sqrt(x**2+y**2)-RR0)
 def thf2(x,y,z,RR0) : return np.arctan2(z,y)
@@ -163,10 +152,10 @@ E1,M1,N1,E2,M2,N2,RR0,W1,W2 = symbols('E1,M1,N1,E2,M2,N2,RR0,W1,W2 ')
 
 # Magnetic field # = = = = = = = = = = = = = = = = = = = = = = = = = = 
 def B(ψ,th,ph,E1,M1,N1,E2,M2,N2,RR0,W1,W2) :
-    Bψ  = (M1*E1*(ψ**(M1/2))*(ψ - RR0**2)*sin(M1*th-N1*ph) + M2*E2*(ψ**(M2/2))*(ψ - RR0**2)*sin(M2*th-N2*ph))  #*R0/R**2 #/ (r*R) | *R0/R**2
+    Bψ  = (M1*E1*(ψ**(M1/2))*(ψ - RR0**2)*sin(M1*th-N1*ph) + M2*E2*(ψ**(M2/2))*(ψ - RR0**2)*sin(M2*th-N2*ph))  #*R0/R**2 
     Bth = (W1 + 2*W2*ψ + E1*(ψ**(M1/2))*(((ψ - RR0**2)*M1/(2*ψ)) + 1)*cos(M1*th-N1*ph)
-           + E2*(ψ**(M2/2))*(((ψ - RR0**2)*M2/(2*ψ)) + 1)*cos(M2*th-N2*ph)) #* R0/R**2 # / (r*R) | *R0/R**2
-    Bph = 1    # R0/R**2 # 1 /(R*r) | *R0/R**2
+           + E2*(ψ**(M2/2))*(((ψ - RR0**2)*M2/(2*ψ)) + 1)*cos(M2*th-N2*ph)) #* R0/R**2 
+    Bph = 1    # R0/R**2 
     return [Bψ, Bth, Bph]
 
 # flow #
@@ -232,11 +221,11 @@ def eta(r,th,ph,E1,M1,N1,E2,M2,N2,RR0,W1,W2) :
     f0 = f(r,th,ph,E1,M1,N1,E2,M2,N2,RR0,W1,W2)
     f1  = multiply(g, f(r,th,ph,E1,M1,N1,E2,M2,N2,RR0,W1,W2)) # f1 = B^\flat
     f2 = [0, -f1[2]/(2*r*RR0), f1[1]/(2*r*RR0)] # f2 = -B x xi = xi x B
-    f3 = dotproduct(f2, multiply(g, f2)) # |f2|^2
+    f3 = dotproduct(f2, multiply(g, f2))   # |f2|^2
     eta0 =          - (f2[2]/f3) * f0[0]  # Using B to remove eta^phi component  
-    eta1 = f2[1]/f3 - (f2[2]/f3) * f0[1]  # (f2 - c B)^j   s.t.  (f2 -c B)^phi = 0  
+    eta1 = f2[1]/f3 - (f2[2]/f3) * f0[1]  
     return [eta0, eta1, 0]
-#     return f2
+
 
 η = lambdify((r,th,ph,E1,M1,N1,E2,M2,N2,RR0,W1,W2), eta(r,th,ph,E1,M1,N1,E2,M2,N2,RR0,W1,W2), 'numpy') # B . xi x eta > 0
 

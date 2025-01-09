@@ -1,6 +1,9 @@
-# Module for edition subroutines for "killends_?r_27Nov_gen*.py"
-# For the conefield implementation of converse KAM. [27nov23]
-#
+"""
+ Module reading, printing and plotting utilities definition and functions
+ used in 'cKAM_CF_2r.py', 'cKAM_CF_2r_plot_simple.py', 'cKAM_CF_2r_plot_cones'.py,
+         'ke_branches2.py', 'ke_encl_area.py' and 'ke_plot_2r_full.py'
+ for the conefield implementation of Converse KAM (Martinez '25).
+"""
 
 import numpy as np
 from matplotlib.colors import LinearSegmentedColormap

@@ -21,6 +21,8 @@
 import matplotlib
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
+from matplotlib.patches import Rectangle
+
 import numpy as np
 import simplejson
 #import os
@@ -89,7 +91,7 @@ thc = [] # Angle value of the (x10,y10) cartesian point
 rc = []  # Radial value of the (x10,y10) cartesian point
 nf = []  # Boundary points index
 btr=0    # Blue-tp-Red boundary identifier variable
-tf = int(tf/2) # Half of integration time
+tf2 = int(tf/2) # Half of integration time
 for i in range(len(result)) :
     x10 = result[i][0] - R0 
     x20 = result[i][1]
@@ -97,7 +99,7 @@ for i in range(len(result)) :
     if abs(x10) + abs(x20)> 0.05:
         te  = result[i][3]
     else:
-        te = tf
+        te = tf2
     mm0  = result[i][5]
     mp0  = result[i][6]
     if ie == 1 :
@@ -117,7 +119,7 @@ for i in range(len(result)) :
             btr = 0
     x1.append(x10)
     x2.append(x20)
-    q.append(te/tf)
+    q.append(te/tf2)
     r0 = np.sqrt(x10**2 + x20**2)
     rc.append(r0)
     thc.append(np.arctan2(x20,x10))
@@ -159,16 +161,16 @@ print('Area = ', len(x1p)*2*hr*hr2/(points)) #
 
 ## FIGURES parameters ~ ~ ~ ~ 
 sz = 5 # Marker size in all plots
-
+# pla=5
 pla2 = 0
 # Plotting area selection ~ ~ ~ ~ 
 #      factor  xl1    xl2    yl1     yl2      [pla]
 af = [[ 7, 7, -0.85,  0.85, -0.82,  0.82],  # [0] Full poloidal plane
       [10,5.2, -0.82, 0.82, -0.02,  0.82],  # [1] Upper plane 
-      [10, 8,  0.07,  0.26,  0.37,  0.53],  # [2] Upper plane ~ zoom 1
-      [10, 8, -0.068, 0.111, 0.415, 0.55],  # [3] Upper plane ~ zoom 2
-      [10, 8,  0.18,  0.43,  0.5,   0.625], # [4] Upper plane ~ zoom 3
-      [ 7, 7, -0.02,  0.6,  -0.02,  0.52]]  # [5]Positive upper quadrant
+      [8, 8,  0.1,  0.22,  0.42,  0.54],     # [2] Upper plane ~ zoom 1
+      [8, 8,  0.31,  0.43,  -0.005,  0.115], # [3] Upper plane ~ zoom 2
+      [8, 8,  0.453,  0.573,   0.227,  0.347],  # [4] Upper plane ~ zoom 3
+      [ 6, 6, -0.01,  0.8,  -0.01,  0.8]]  # [5]Positive upper quadrant
 
 #      factor     xl1    xl2    yl1   yl2      [pla2]
 af2 = [[10, 5.2, -0.05 , np.pi, 0,    0.85], # [0] "Upper half" plane
@@ -229,6 +231,12 @@ ax2.set_xlim( af[pla][2] , af[pla][3])
 ax2.set_ylim( af[pla][4] , af[pla][5])  
 
 
+rect0 = Rectangle((0.1, 0.42), 0.12, 0.12, linewidth=3, edgecolor='r', facecolor='none')
+ax2.add_patch(rect0)
+rect1 = Rectangle((0.31, -0.005), 0.12, 0.12, linewidth=3, edgecolor='m', facecolor='none')
+ax2.add_patch(rect1)
+rect2 = Rectangle((0.453, 0.227), 0.12, 0.12, linewidth=3, edgecolor=(0,0.5,0), facecolor='none')
+ax2.add_patch(rect2)
 
 # - - FIGURE 3 ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ 
 # Converse-KAM-speed plot - (HUES - th,r) ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ 
@@ -249,7 +257,7 @@ fig3.cbar.set_label('$q$', rotation=0, fontsize = 16, labelpad=10, y=0.5) #
 # fig.savefig('2r_RB_%s_%s_%s_%s_%s_%s_Rz_S_%s.png' % (int(m1),int(n1),ep1, int(m2),int(n2),ep2,tf), dpi=300)
 # fig2.savefig('2r_hue_%s_%s_%s_%s_%s_%s_Rz_S_%s.png' % (int(m1),int(n1),ep1, int(m2),int(n2),ep2,tf), dpi=300)
 # fig3.savefig('2r_hue_%s_%s_%s_%s_%s_%s_thr_S_%s.png'% (int(m1),int(n1),ep1, int(m2),int(n2),ep2,tf), dpi=300)
-# fig2.savefig('zoom_%s_Rz_%s.png' % (ep2,tf), dpi=300)
+# fig2.savefig('C1_%s_Rz_%s.png' % (ep2,tf), dpi=300)
 # fig3.savefig('zoom_%s_thr_%s.png'% (ep2,tf), dpi=300)
 
 # PLOT THE FIGURES - - - - - - - - -
