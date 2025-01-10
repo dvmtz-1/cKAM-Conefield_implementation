@@ -161,15 +161,15 @@ print('Area = ', len(x1p)*2*hr*hr2/(points)) #
 
 ## FIGURES parameters ~ ~ ~ ~ 
 sz = 5 # Marker size in all plots
-# pla=5
+# pla = 5 
 pla2 = 0
 # Plotting area selection ~ ~ ~ ~ 
 #      factor  xl1    xl2    yl1     yl2      [pla]
 af = [[ 7, 7, -0.85,  0.85, -0.82,  0.82],  # [0] Full poloidal plane
       [10,5.2, -0.82, 0.82, -0.02,  0.82],  # [1] Upper plane 
-      [8, 8,  0.1,  0.22,  0.42,  0.54],     # [2] Upper plane ~ zoom 1
+      [8, 8,  0.1,  0.22,  0.50,  0.59],     # [2] Upper plane ~ zoom 1
       [8, 8,  0.31,  0.43,  -0.005,  0.115], # [3] Upper plane ~ zoom 2
-      [8, 8,  0.453,  0.573,   0.227,  0.347],  # [4] Upper plane ~ zoom 3
+      [8, 8,  0.46,  0.55,   0.227,  0.347],  # [4] Upper plane ~ zoom 3
       [ 6, 6, -0.01,  0.8,  -0.01,  0.8]]  # [5]Positive upper quadrant
 
 #      factor     xl1    xl2    yl1   yl2      [pla2]
@@ -231,11 +231,11 @@ ax2.set_xlim( af[pla][2] , af[pla][3])
 ax2.set_ylim( af[pla][4] , af[pla][5])  
 
 
-rect0 = Rectangle((0.1, 0.42), 0.12, 0.12, linewidth=3, edgecolor='r', facecolor='none')
+rect0 = Rectangle((0.1, 0.43), 0.09, 0.09, linewidth=3, edgecolor='r', facecolor='none')
 ax2.add_patch(rect0)
-rect1 = Rectangle((0.31, -0.005), 0.12, 0.12, linewidth=3, edgecolor='m', facecolor='none')
+rect1 = Rectangle((0.312, -0.002), 0.09, 0.09, linewidth=3, edgecolor='m', facecolor='none')
 ax2.add_patch(rect1)
-rect2 = Rectangle((0.453, 0.227), 0.12, 0.12, linewidth=3, edgecolor=(0,0.5,0), facecolor='none')
+rect2 = Rectangle((0.472, 0.23), 0.09, 0.09, linewidth=3, edgecolor=(0,0.5,0), facecolor='none')
 ax2.add_patch(rect2)
 
 # - - FIGURE 3 ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ 

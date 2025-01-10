@@ -95,25 +95,25 @@ E1,M1,N1,E2,M2,N2,RR0,W1,W2 = symbols('E1,M1,N1,E2,M2,N2,RR0,W1,W2 ')
 ## INTEGRATION & RESULTS ##
 
 # time parameters #
-tf = int(data[0]/2)  # TIME OUT ##
-t_int_b = [0, -tf]
-t_int_f = [0, tf]
+tf = int(data[0])  # TIME OUT ##
+tf2 = tf/2         # Half of TIME OUT ##
+t_int_b = [0, -tf2]
+t_int_f = [0, tf2]
 
 opt = int(data[11]) # REGION SELECTION ##
-# [0] - whole plane 
-# [1] - upper plane
-# [2] - positive quadrant
+
+
+
 hr = 0.8   # x-axis half-length ('R' or 'y' coordinate)
 hr2 = 0.8  # y-axis half-length ('z' coordinate)
 z00 = 0.0  # Parameter to for z-axis "base"
-region = [ [1, R0-hr, R0 + hr, z00 - hr2, z00 + hr2], #[orb/num,x-.x+,z-,z+]
-           [2, R0-hr, R0 + hr, z00      , z00 + hr2],
-           [1, z00  ,z00 + hr, z00      , z00 + hr2],
-           [1, R0 + 0.3  ,R0 + 0.6, 0.2      , 0.5]]
+region = [ [1, R0-hr, R0 + hr, z00 - hr2, z00 + hr2], # [0] Whole poloidal plane 
+           [2, R0-hr, R0 + hr, z00      , z00 + hr2], # [1] Upper half plane
+           [1, z00  ,z00 + hr, z00      , z00 + hr2]] # [2] Positive upper quadrant
+
 
 # space sampling #
 o_ax = int(data[1])   # sample of each axis (unless opt = 2, Upper plane)
-#o_ax = 2   # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 orbits = int(o_ax**2 / region[opt][0]) # Number of grid points
 
 y0_list = np.linspace(region[opt][1] , region[opt][2], o_ax)       
@@ -135,8 +135,8 @@ def loop(i,j) :
     vth0 = thf(0,y0,z0,R0)  
     
     
-    # Killends - 27Nov - Derivative Matrix - - DB - - DB - - DB - - DB - - DB - - DB - - DB - - 
-    B0 = [1,0,0,0,1,0,0,0,1]  # v0 = ξ = (r0,0,0)
+    # Set initial values and parameters  - - 
+    B0 = [1,0,0,0,1,0,0,0,1]  # 
     par = [e1,m1,n1,e2,m2,n2,R0,w1,w2] 
     Z0 =  [ψ0, vth0, ph0,*B0,*par]
     mp = 0.0
@@ -147,7 +147,6 @@ def loop(i,j) :
     SOLDBb = solve_ivp(system3, t_int_b, Z0, method='RK45', rtol=1e-9, atol=1e-11)
     
     
-    #print('len(SOLDBf.t), len(SOLDBb.t) = ',len(SOLDBf.t),'  ',len(SOLDBb.t))
     t_test = len(SOLDBf.t)
     if len(SOLDBf.t) > len(SOLDBb.t):
         t_test = len(SOLDBb.t)
@@ -158,23 +157,21 @@ def loop(i,j) :
     for k in range(0,t_test):
         
         sp1,sm1,mp, mm, sξf,sξb = cf_computation(ψ0, vth0, ph0,DBf[k],DBb[k],*par)
-#         sp = sp1
-#         sm = sm1
-        if k <= 5:
+
+        if k <= 5:  # Use the latest slope as reference
             sp = sp1
             sm = sm1
-        if k>5 and sp1 < sp:
+        if k>5 and sp1 < sp:  # Select the minimum of s^+
             sp = sp1
-        if k>5 and sm  < sm1:
+        if k>5 and sm  < sm1: # Select the maximum od s^-
             sm = sm1
             
         if sp < sm or sξf < 0 or sξb > 0:
             te = SOLDBf.t[k]
             ie = 1.0
-            #print('ie , te =',ie,' , ',te)
             break
         else :
-            te = tf
+            te = tf2
             ie = 0.0
         
         
@@ -201,7 +198,7 @@ print('time = {:0>2}:{:0>2}:{:02.0f}'.format(int(hours),int(minutes),seconds))
 
 
 ## SAVING DATA ##
-file = open('cf_%s_%s_%s_%s_%s_%s_%s_%s.txt' % (orbits, 2*tf, ep1,int(m1),int(n1), ep2,int(m2),int(n2)),'w')
+file = open('cf_%s_%s_%s_%s_%s_%s_%s_%s.txt' % (orbits, tf, ep1,int(m1),int(n1), ep2,int(m2),int(n2)),'w')
 simplejson.dump(result, file)
 file.close()
 

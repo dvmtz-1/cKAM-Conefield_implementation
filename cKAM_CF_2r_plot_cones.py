@@ -159,16 +159,16 @@ print('Area = ', len(x1p)*2*hr*hr2/(points)) #
 
 ## FIGURES parameters ~ ~ ~ ~ 
 sz = 5 # Marker size in all plots
-# pla = 4
-pla2 = 1
+# pla = 1
+pla2 = 0
 # Plotting area selection ~ ~ ~ ~ 
 #      factor  xl1    xl2    yl1     yl2      [pla]
 af = [[ 7, 7, -0.85,  0.85, -0.82,  0.82],  # [0] Full poloidal plane
       [10,5.2, -0.82, 0.82, -0.02,  0.82],  # [1] Upper plane 
-      [8, 8,  0.1,  0.22,  0.42,  0.54],     # [2] Upper plane ~ zoom 1
-      [8, 8,  0.31,  0.43,  -0.005,  0.115], # [3] Upper plane ~ zoom 2
-      [8, 8,  0.453,  0.573,   0.227,  0.347],  # [4] Upper plane ~ zoom 3
-      [ 7, 7, -0.02,  0.6,  -0.02,  0.52]]  # [5]Positive upper quadrant
+      [8, 8,  0.1,  0.19,  0.43,  0.52],    # [2] Upper plane ~ zoom 1
+      [8, 8,  0.312,  0.402,  -0.002,  0.088], # [3] Upper plane ~ zoom 2
+      [8, 8,  0.472,  0.562,   0.23,  0.32], # [4] Upper plane ~ zoom 3
+      [ 7, 7, -0.02,  0.6,  -0.02,  0.52]]   # [5]Positive upper quadrant
 
 #      factor     xl1    xl2    yl1   yl2      [pla2]
 af2 = [[10, 5.2, -0.05 , np.pi, 0,    0.85], # [0] "Upper half" plane
@@ -219,12 +219,16 @@ fig2.cbar.set_label('$q$', rotation=0, fontsize = 16, labelpad=10, y=0.5) #
 
 # FIGURE 2 : Slopes plots ~ ~ ~ ~ ~ ~ ~ ~ 
 nnskip = 1 # Number of points in the boundary to have their slopes plotted 1 every [nnskip]
-delta = 0.005  # Slopes size - Fig2
+delta = 0.004  # Slopes size - Fig2
 
-for j in range(0,len(bnd),nnskip):  # Plot cones on the boundary
-    nn = bnd[j]                     #   "∂S"
-# for j in range(0,len(compl)):     # Plot cones on all the 
-#     nn = compl[j]                 # non-discriminated region - "S^c"
+sec = 0 # Cone plotting region: 0 Boundary "∂S" | 1: Complement "S^c"
+if sec == 0:
+    region = bnd
+else:
+    region = compl
+
+for j in range(0,len(region),nnskip):  
+    nn = region[j]                     
 
     # BOUNDARY POINTS ~ ~ ~ ~ ~ ~ ~ ~ 
 #     ax2.plot(x1[nn], x2[nn], 'rp', markersize= sz +2)
